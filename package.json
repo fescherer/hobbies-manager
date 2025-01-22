@@ -28,6 +28,7 @@
     "eslint-plugin-jsonc": "^2.18.2",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-tailwindcss": "^3.18.0",
+    "globals": "^15.14.0",
     "lint-staged": "^15.4.1",
     "postcss": "^8",
     "simple-git-hooks": "^2.11.1",
