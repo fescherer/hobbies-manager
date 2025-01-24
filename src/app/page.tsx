@@ -1,13 +1,13 @@
-export default function Home() {
+import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp'
+export const dynamic = 'force-dynamic'
+
+export default async function Home() {
+  const { firebaseServerApp } = await getAuthenticatedAppForUser()
+  const { currentUser } = await getAuthenticatedAppForUser()
   return (
     <>
-      <button className="btn btn-accent" type="button">aaa</button>
-
-      <ul className="menu w-56 bg-base-200">
-        <li><a>Item 1</a></li>
-        <li><a className="active">Item 2</a></li>
-        <li><a>Item 3</a></li>
-      </ul>
+      {firebaseServerApp.name}
+      <pre>{JSON.stringify(currentUser)}</pre>
     </>
   )
 }
