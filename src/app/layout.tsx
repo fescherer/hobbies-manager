@@ -33,7 +33,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} m-auto max-w-screen-md antialiased`}
       >
         <Header session={session} />
-        {/* {children} */}
+        {children}
       </body>
     </html>
   )

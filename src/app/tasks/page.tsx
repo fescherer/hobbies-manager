@@ -1,9 +1,16 @@
+'use client'
+
 import { tasks } from '@/mock/tasks'
 import { TableRow } from './components/table-row'
+import { useUserSession } from '@/hooks/use-user-section'
 
 export default function Tasks() {
+  const userSessionId = useUserSession()
+
   return (
     <div>
+      <pre>{JSON.stringify(userSessionId)}</pre>
+
       <div className="overflow-x-auto">
         <table className="table border-separate border-spacing-y-2">
           <thead>
