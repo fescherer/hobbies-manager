@@ -1,5 +1,13 @@
+// https://www.scipress.io/post/P4fHHzH85Pew29ZYa320/Nextjs--Firebase-Project-Setup-Guide-with-VS-Code
+// https://dev.to/yutakusuno/nextjs14-firebase-authentication-with-google-sign-in-using-cookies-middleware-and-server-actions-48h4
+
 // Import the functions you need from the SDKs you need
-const config = {
+import { getApps, initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -8,12 +16,14 @@ const config = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
-// When deployed, there are quotes that need to be stripped
-Object.keys(config).forEach((key) => {
-  const configValue = config[key as keyof typeof config] + ''
-  if (configValue.charAt(0) === '"') {
-    config[key as keyof typeof config] = configValue.substring(1, configValue.length - 1)
-  }
-})
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
 
-export const firebaseConfig = config
+// Instantiate services
+export const auth = getAuth(app)
+export const db = getFirestore(app)
+
+const firebaseApp
+  = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+
+export const firebaseAuth = getAuth(firebaseApp)

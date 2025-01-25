@@ -1,7 +1,7 @@
 'use client'
 
 import { ITask } from '@/@types/types'
-import { cn } from '@/app/util/cn.function'
+import { cn } from '@/util/cn.function'
 import { hobbies } from '@/mock/hobbies'
 
 type TableRowProps = {
@@ -35,7 +35,7 @@ export function TableRow({ task }: TableRowProps) {
 
       <td>
         <select className="select w-full max-w-xs">
-          <option disabled selected>{task.state}</option>
+          <option disabled>{task.state}</option>
           <option>Completed</option>
           <option>OnGoing</option>
         </select>

@@ -1,28 +1,35 @@
 import {
+  type User,
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
 } from 'firebase/auth'
-import { auth } from './client'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function onAuthStateChanged(cb: any) {
-  return _onAuthStateChanged(auth, cb)
+import { firebaseAuth } from './config'
+
+export function onAuthStateChanged(callback: (authUser: User | null) => void) {
+  return _onAuthStateChanged(firebaseAuth, callback)
 }
 
 export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider()
 
   try {
-    await signInWithPopup(auth, provider)
+    const result = await signInWithPopup(firebaseAuth, provider)
+
+    if (!result || !result.user) {
+      throw new Error('Google sign in failed')
+    }
+
+    return result.user.uid
   } catch (error) {
     console.error('Error signing in with Google', error)
   }
 }
 
-export async function signOut() {
+export async function signOutWithGoogle() {
   try {
-    return auth.signOut()
+    await firebaseAuth.signOut()
   } catch (error) {
     console.error('Error signing out with Google', error)
   }

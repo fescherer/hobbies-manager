@@ -1,6 +1,6 @@
 import { hobbies } from '@/mock/hobbies'
 import Image from 'next/image'
-import { cn } from '../util/cn.function'
+import { cn } from '../../util/cn.function'
 
 export default function Hobbies() {
   const classCard = 'h-80 w-60 rounded border shadow-md transition-all hover:scale-105'

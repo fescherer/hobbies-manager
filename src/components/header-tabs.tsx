@@ -1,8 +1,8 @@
 'use client'
 
+import { cn } from '@/util/cn.function'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '../util/cn.function'
 
 export function HeaderTabs() {
   const route = usePathname()
