@@ -5,6 +5,7 @@ import { HeaderTabs } from './header-tabs'
 import { signInWithGoogle, signOutWithGoogle } from '@/lib/firebase/auth'
 import { useUserSession } from '@/hooks/use-user-section'
 import { createSession, removeSession } from '@/actions/auth'
+import { getFirestoreData } from '@/lib/firebase/firestore.functions'
 
 export function Header({ session }: { session: string | null }) {
   // const [user, setUser] = useState<User | null>(null)
@@ -52,6 +53,7 @@ export function Header({ session }: { session: string | null }) {
     const userUid = await signInWithGoogle()
     if (userUid) {
       await createSession(userUid)
+      getFirestoreData()
     }
   }
 
