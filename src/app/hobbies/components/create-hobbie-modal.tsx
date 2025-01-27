@@ -1,13 +1,14 @@
 'use client'
 
 import { IHobbie } from '@/@types/types'
-import { useFirestore } from '@/contexts/firebase.context'
+import { createFirestoreHobbies } from '@/lib/firebase/firestore.functions'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-export function CreateHobbieModal() {
-  // Firestore data
-  const { firestore } = useFirestore()
+type CreateHobbieModalProps = {
+  updateHobbie: () => void
+}
 
+export function CreateHobbieModal({ updateHobbie }: CreateHobbieModalProps) {
   // Form
   const {
     register,
@@ -17,10 +18,12 @@ export function CreateHobbieModal() {
   } = useForm<IHobbie>()
 
   const onSubmit: SubmitHandler<IHobbie> = (data) => {
-    console.log(firestore)
-    console.log(data)
-    // createFirestoreHobbies(data)
-    console.log('hobbie created')
+    createFirestoreHobbies({
+      ...data,
+      createdAt: new Date().toISOString(),
+    })
+    updateHobbie()
+    hideModal()
   }
 
   // Dialog hide-show

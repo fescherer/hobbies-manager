@@ -1,15 +1,18 @@
-import { hobbies } from '@/mock/hobbies'
-import { CreateHobbieModal } from './components/create-hobbie-modal'
-import { EditHobbieModal } from './components/edit-hobbie-modal'
+'use client'
+
+import { useUser } from '@/contexts/user.context'
+import { ListHobbies } from './components/list-hobbies'
 
 export default function Hobbies() {
-  return (
-    <div className="flex flex-wrap gap-5 py-10">
-      <CreateHobbieModal />
+  const { user } = useUser()
 
-      {hobbies.map(hobbie => (
-        <EditHobbieModal hobbie={hobbie} key={hobbie.id} />
-      ))}
-    </div>
-  )
+  if (user)
+    return (
+      <div className="flex flex-wrap gap-5 py-10">
+        <ListHobbies />
+      </div>
+    )
+  else {
+    <></>
+  }
 }

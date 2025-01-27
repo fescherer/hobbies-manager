@@ -7,8 +7,8 @@ export type ITask = {
 }
 
 export type IHobbie = {
-  id: number
+  id: string
   name: string
-  createDate: Date
+  createdAt: string
   color: string
 }

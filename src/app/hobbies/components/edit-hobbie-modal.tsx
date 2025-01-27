@@ -1,18 +1,20 @@
 'use client'
 
 import { IHobbie } from '@/@types/types'
-import { useFirestore } from '@/contexts/firebase.context'
+import { useUser } from '@/contexts/user.context'
+import { deleteFirestoreHobbie, updateFirestoreHobbie } from '@/lib/firebase/firestore.functions'
 import { cn } from '@/util/cn.function'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 type EditHobbieModalProps = {
   hobbie: IHobbie
+  updateHobbie: () => void
 }
 
-export function EditHobbieModal({ hobbie }: EditHobbieModalProps) {
+export function EditHobbieModal({ hobbie, updateHobbie }: EditHobbieModalProps) {
   // Firestore data
-  const { firestore } = useFirestore()
+  const { userUid } = useUser()
 
   // Form
   const {
@@ -23,18 +25,20 @@ export function EditHobbieModal({ hobbie }: EditHobbieModalProps) {
   } = useForm<IHobbie>()
 
   useEffect(() => {
+    console.log(hobbie)
     reset(hobbie)
   }, [])
 
   const onSubmit: SubmitHandler<IHobbie> = (data) => {
-    console.log(firestore)
-    console.log(data)
-    // createFirestoreHobbies(data)
-    console.log('hobbie created')
+    updateFirestoreHobbie(userUid || '', data.id, data)
+    updateHobbie()
+    hideModal()
   }
 
-  function deleteHobbie() {
-
+  async function deleteHobbie() {
+    await deleteFirestoreHobbie(userUid || '', hobbie.id)
+    updateHobbie()
+    hideModal()
   }
 
   // Dialog hide-show
@@ -48,7 +52,7 @@ export function EditHobbieModal({ hobbie }: EditHobbieModalProps) {
 
   return (
     <>
-      <button key={hobbie.name} className={cn('h-80 w-60 rounded border shadow-md transition-all hover:scale-105', 'flex flex-col items-center justify-center gap-5')} onClick={showDialog} type="button">
+      <button className={cn('h-80 w-60 rounded border shadow-md transition-all hover:scale-105', 'flex flex-col items-center justify-center gap-5')} onClick={showDialog} type="button">
         {/* <Image src={hobbie.image} width={112} height={112} className="size-28 rounded-full" alt="" /> */}
         <div style={{ background: hobbie.color }} className="size-28 rounded-full" />
 
@@ -98,7 +102,7 @@ export function EditHobbieModal({ hobbie }: EditHobbieModalProps) {
             <div className="modal-action">
               <button type="button" className="btn" onClick={hideModal}>Close</button>
               <button className="btn btn-error" type="button" onClick={deleteHobbie}>Delete</button>
-              <button className="btn btn-primary" type="submit">Submit</button>
+              <button className="btn btn-primary" type="submit">Change</button>
             </div>
           </form>
         </div>
