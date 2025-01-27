@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import { HeaderTabs } from './header-tabs'
 import { signInWithGoogle, signOutWithGoogle } from '@/lib/firebase/auth'
-import { useUserSession } from '@/hooks/use-user-section'
 import { createSession, removeSession } from '@/actions/auth'
 import { getFirestoreData } from '@/lib/firebase/firestore.functions'
+import { useUser } from '@/contexts/user.context'
 
-export function Header({ session }: { session: string | null }) {
+export function Header() {
   // const [user, setUser] = useState<User | null>(null)
 
   // useEffect(() => {
@@ -47,7 +47,7 @@ export function Header({ session }: { session: string | null }) {
   //   })
   // }
 
-  const userSessionId = useUserSession(session)
+  const { user } = useUser()
 
   const handleSignIn = async () => {
     const userUid = await signInWithGoogle()
@@ -70,19 +70,19 @@ export function Header({ session }: { session: string | null }) {
         </div>
 
         {
-          userSessionId.userUid && <HeaderTabs />
+          user?.uid && <HeaderTabs />
         }
 
         <div className="navbar-end">
-          {userSessionId.userUid
-            ? userSessionId.user && userSessionId.user.photoURL
+          {user?.uid
+            ? user && user.photoURL
               ? (
                 <div className="flex gap-2">
                   <Link href="/profile" className="avatar btn btn-circle btn-ghost">
                     <img
                       className="w-10 rounded-full"
                       alt=""
-                      src={userSessionId.user.photoURL}
+                      src={user.photoURL}
                     />
                   </Link>
 

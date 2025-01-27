@@ -4,6 +4,8 @@ import './globals.css'
 import { cookies } from 'next/headers'
 import { SESSION_COOKIE_NAME } from '@/util/constants'
 import { Header } from '@/components/header'
+import { UserProvider } from '@/contexts/user.context'
+import { FirestoreProvider } from '@/contexts/firebase.context'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,8 +34,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} m-auto max-w-screen-md antialiased`}
       >
-        <Header session={session} />
-        {children}
+        <FirestoreProvider>
+          <UserProvider InitSession={session}>
+            <Header />
+            {children}
+          </UserProvider>
+        </FirestoreProvider>
       </body>
     </html>
   )

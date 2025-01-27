@@ -1,7 +1,7 @@
 import { HOME_ROUTE, ROOT_ROUTE, SESSION_COOKIE_NAME } from '@/util/constants'
 import { type NextRequest, NextResponse } from 'next/server'
 
-const protectedRoutes = [HOME_ROUTE, '/tags']
+const protectedRoutes = [HOME_ROUTE, '/tags', 'hobbies']
 
 export default function middleware(request: NextRequest) {
   const session = request.cookies.get(SESSION_COOKIE_NAME)?.value || ''

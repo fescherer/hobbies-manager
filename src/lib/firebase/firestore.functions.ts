@@ -1,8 +1,10 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
 import { auth, db } from './config'
+import { IHobbie } from '@/@types/types'
 
 export async function getFirestoreData() {
   const user = auth.currentUser
+  console.log(auth.currentUser)
   if (user) {
     const userDoc = doc(db, 'hobbies-manager', user.uid)
     const docSnap = await getDoc(userDoc)
@@ -16,9 +18,10 @@ export async function getFirestoreData() {
           name: user.displayName,
           email: user.email,
           createdAt: new Date(),
-          tasks: [],
-          hobbies: [],
         })
+
+        // collection(userDoc, 'tasks')
+        // collection(userDoc, 'hobbies')
 
         const docSnap = await getDoc(userDoc)
 
@@ -27,6 +30,24 @@ export async function getFirestoreData() {
         console.log(e)
         return null
       }
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function createFirestoreHobbies(data: IHobbie) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid)
+    try {
+      const subcollectionHobbies = collection(userDoc, 'hobbies')
+      const newDocRef = await addDoc(subcollectionHobbies, data)
+      return newDocRef
+    } catch (e) {
+      console.log(e)
+      return null
     }
   } else {
     console.log('No user is signed in')
