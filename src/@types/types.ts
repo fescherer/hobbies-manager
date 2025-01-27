@@ -1,9 +1,10 @@
 export type ITask = {
-  id: number
+  id: string
   title: string
-  hobbie: number
+  hobbie: string
   limitDate: string
   state: string
+  createdAt: string
 }
 
 export type IHobbie = {

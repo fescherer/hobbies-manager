@@ -1,6 +1,6 @@
 import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 import { auth, db } from './config'
-import { IHobbie } from '@/@types/types'
+import { IHobbie, ITask } from '@/@types/types'
 
 export async function getFirestoreData() {
   const user = auth.currentUser
@@ -70,6 +70,25 @@ export async function getFirestoreHobbies() {
   }
 }
 
+export async function getFirestoreHobbie(docId: string) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid)
+    try {
+      const hobbieCollection = doc(userDoc, 'hobbies', docId)
+      const docs = await getDoc(hobbieCollection)
+      console.log('firestore hobbie', docs, docId)
+      return docs
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
 export async function updateFirestoreHobbie(uid: string, documentid: string, data: IHobbie) {
   const user = auth.currentUser
   const userDoc = doc(db, 'hobbies-manager', uid)
@@ -95,6 +114,78 @@ export async function deleteFirestoreHobbie(uid: string, documentid: string) {
   if (user && userDoc) {
     try {
       await deleteDoc(doc(db, 'hobbies-manager', user.uid, 'hobbies', documentid))
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function getFirestoreTasks() {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid)
+    try {
+      const tasksCollection = collection(userDoc, 'tasks')
+      const docs = await getDocs(tasksCollection)
+      return docs
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function createFirestoreTask(data: ITask) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid)
+    try {
+      const subcollectionHobbies = collection(userDoc, 'tasks')
+      const newDocRef = await addDoc(subcollectionHobbies, data)
+      return newDocRef
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function updateFirestoreTask(uid: string, documentid: string, data: ITask) {
+  const user = auth.currentUser
+  const userDoc = doc(db, 'hobbies-manager', uid)
+  if (user && userDoc) {
+    try {
+      const docRef = doc(db, 'hobbies-manager', user.uid, 'tasks', documentid)
+      await setDoc(docRef, {
+        title: data.title,
+        limitDate: data.limitDate,
+        hobbie: data.hobbie,
+        state: data.state,
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function deleteFirestoreTask(uid: string, documentid: string) {
+  const user = auth.currentUser
+  const userDoc = doc(db, 'hobbies-manager', uid)
+  if (user && userDoc) {
+    try {
+      await deleteDoc(doc(db, 'hobbies-manager', user.uid, 'tasks', documentid))
     } catch (e) {
       console.log(e)
     }
