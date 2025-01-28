@@ -3,6 +3,7 @@ import { TableRow } from './table-row'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 import { getFirestoreTasks } from '@/lib/firebase/firestore.functions'
 import { CreateTaskModal } from './create-task.modal'
+import { FiltersTask } from './filters-task'
 
 export function Table() {
   const [tasks, setTasks] = useState<QuerySnapshot<DocumentData, DocumentData> | null>(null)
@@ -25,7 +26,11 @@ export function Table() {
   else
     return (
       <div className="mt-10 flex flex-col">
-        <CreateTaskModal updateTasks={getTasks} />
+
+        <div className="flex items-center justify-between">
+          <FiltersTask />
+          <CreateTaskModal updateTasks={getTasks} />
+        </div>
 
         <div className="overflow-x-auto">
           <table className="table border-separate border-spacing-y-2">
@@ -33,7 +38,6 @@ export function Table() {
               <tr>
                 <th />
                 <th>Name</th>
-                <th>Description</th>
                 <th>State</th>
                 <th />
               </tr>
@@ -60,7 +64,6 @@ export function Table() {
 
             <tfoot>
               <tr>
-                <th />
                 <th />
                 <th />
                 <th />

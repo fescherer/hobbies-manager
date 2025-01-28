@@ -68,10 +68,6 @@ export function TableRow({ task, updateTasks }: TableRowProps) {
       </td>
 
       <td>
-        <div className="font-bold">desc</div>
-      </td>
-
-      <td>
         <select value={task.state} className="select w-full max-w-xs" onChange={e => updateTask(e.target.value)}>
           <option disabled>{task.state}</option>
           <option value="Completed">Completed</option>
