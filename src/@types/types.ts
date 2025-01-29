@@ -1,7 +1,8 @@
 export type ITask = {
   id: string
   title: string
-  hobbie: string
+  hobbie: IHobbie
+  priority: number
   limitDate: string
   state: string
   createdAt: string

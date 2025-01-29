@@ -27,9 +27,9 @@ export function FiltersTask() {
   }
 
   return (
-    <div role="tablist" className="tabs tabs-lifted">
+    <div role="tablist" className="tabs tabs-lifted ">
       {tabs.map((tab, index) => (
-        <button role="tab" type="button" className={cn('tab', { 'tab-active': tabSelected === index })} key={tab.title} onClick={() => handleTab(index)}>{tab.title}</button>
+        <button role="tab" type="button" className={cn('tab', { 'tab-active !bg-slate-50': tabSelected === index })} key={tab.title} onClick={() => handleTab(index)}>{tab.title}</button>
       ))}
     </div>
   )

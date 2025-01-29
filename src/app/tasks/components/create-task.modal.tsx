@@ -31,7 +31,7 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
     createFirestoreTask({
       ...data,
       limitDate: new Date(data.limitDate).toISOString(),
-      state: 'OnGoing',
+      state: 'ON GOING',
       createdAt: new Date().toISOString(),
     })
     updateTasks()
@@ -87,6 +87,23 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
               </select>
 
               {errors.hobbie && <span className="text-error">{errors.hobbie.message}</span>}
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Hobbie Priority</span>
+              </label>
+
+              <input
+                type="number"
+                min={0}
+                max={10}
+                placeholder="Your hobbie priority"
+                {...register('priority', { required: 'Priority is required' })}
+                className={`input input-bordered w-full ${errors.priority ? 'input-error' : ''}`}
+              />
+
+              {errors.priority && <span className="text-error">{errors.priority.message}</span>}
             </div>
 
             <div>

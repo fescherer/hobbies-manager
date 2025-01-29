@@ -77,7 +77,6 @@ export async function getFirestoreHobbie(docId: string) {
     try {
       const hobbieCollection = doc(userDoc, 'hobbies', docId)
       const docs = await getDoc(hobbieCollection)
-      console.log('firestore hobbie', docs, docId)
       return docs
     } catch (e) {
       console.log(e)
@@ -165,7 +164,8 @@ export async function updateFirestoreTask(uid: string, documentid: string, data:
       await setDoc(docRef, {
         title: data.title,
         limitDate: data.limitDate,
-        hobbie: data.hobbie,
+        priority: data.priority,
+        hobbie: data.hobbie.id,
         state: data.state,
       })
     } catch (e) {
