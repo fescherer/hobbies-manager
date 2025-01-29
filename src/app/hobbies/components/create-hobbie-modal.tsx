@@ -63,6 +63,23 @@ export function CreateHobbieModal({ updateHobbie }: CreateHobbieModalProps) {
 
             <div>
               <label className="label">
+                <span className="label-text">Hobbie Priority</span>
+              </label>
+
+              <input
+                type="number"
+                min={0}
+                max={10}
+                placeholder="Your hobbie priority"
+                {...register('priority', { required: 'Priority is required' })}
+                className={`input input-bordered w-full ${errors.priority ? 'input-error' : ''}`}
+              />
+
+              {errors.priority && <span className="text-error">{errors.priority.message}</span>}
+            </div>
+
+            <div>
+              <label className="label">
                 <span className="label-text">Hobbie Color</span>
               </label>
 

@@ -8,9 +8,7 @@ export default function Hobbies() {
 
   if (user)
     return (
-      <div className="flex flex-wrap gap-5 py-10">
-        <ListHobbies />
-      </div>
+      <ListHobbies />
     )
   else {
     <></>

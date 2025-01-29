@@ -8,45 +8,6 @@ import { getFirestoreData } from '@/lib/firebase/firestore.functions'
 import { useUser } from '@/contexts/user.context'
 
 export function Header() {
-  // const [user, setUser] = useState<User | null>(null)
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       const uid = user.uid
-  //       console.log('uid', uid)
-  //     } else {
-  //       console.log('user is logged out')
-  //     }
-  //   })
-  // }, [])
-
-  // const handleLogin = () => {
-  //   const auth = getAuth()
-  //   signInWithPopup(auth, new GoogleAuthProvider())
-  //     .then((result) => {
-  //       // This gives you a Google Access Token. You can use it to access the Google API.
-  //       // const credential = GoogleAuthProvider.credentialFromResult(result)
-  //       setUser(result.user)
-
-  //       if (userUid) {
-  //         await createSession(userUid)
-  //       }
-  //     }).catch((error) => {
-  //       console.log(error)
-  //     })
-  // }
-
-  // const handleLogout = () => {
-  //   const auth = getAuth()
-  //   signOut(auth).then(() => {
-  //     console.log('logout')
-  //     setUser(null)
-  //   }).catch((error) => {
-  //     console.log('logout error', error)
-  //   })
-  // }
-
   const { user } = useUser()
 
   const handleSignIn = async () => {
@@ -66,7 +27,7 @@ export function Header() {
     <div>
       <div className="navbar bg-base-100">
         <div className="navbar-start">
-          <Link href="/" className="btn btn-ghost text-xl">daisyUI</Link>
+          <Link href="/" className="btn btn-ghost text-xl">Task Manager</Link>
         </div>
 
         {

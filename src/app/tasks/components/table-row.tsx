@@ -32,6 +32,7 @@ export function TableRow({ task, updateTasks }: TableRowProps) {
     if (hobbieData?.exists())
       setHobbie({
         id: hobbieData.id,
+        priority: hobbieData.data().priority,
         color: hobbieData.data().color,
         createdAt: hobbieData.data().createdAt,
         name: hobbieData.data().name,

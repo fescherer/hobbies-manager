@@ -95,10 +95,7 @@ export async function updateFirestoreHobbie(uid: string, documentid: string, dat
   if (user && userDoc) {
     try {
       const docRef = doc(db, 'hobbies-manager', user.uid, 'hobbies', documentid)
-      await setDoc(docRef, {
-        name: data.name,
-        color: data.color,
-      })
+      await setDoc(docRef, data)
     } catch (e) {
       console.log(e)
     }

@@ -10,6 +10,7 @@ export type ITask = {
 export type IHobbie = {
   id: string
   name: string
+  priority: number
   createdAt: string
   color: string
 }
