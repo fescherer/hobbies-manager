@@ -4,6 +4,7 @@ import { CreateTaskModal } from './create-task.modal'
 import { FiltersTask } from './filters-task'
 import { ITask } from '@/@types/types'
 import { useUser } from '@/contexts/user.context'
+import { FinishWeek } from './finish-week'
 
 const defaultHobbie = {
   id: '',
@@ -138,6 +139,7 @@ export function Table() {
       <div>
         <div>
           <div className="mt-10 flex w-full flex-col items-baseline">
+            <FinishWeek />
             <CreateTaskModal updateTasks={getTasks} />
             <FiltersTask />
           </div>
