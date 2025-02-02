@@ -4,7 +4,7 @@ import { CreateTaskModal } from './create-task.modal'
 import { FiltersTask } from './filters-task'
 import { ITask } from '@/@types/types'
 import { useUser } from '@/contexts/user.context'
-import { FinishWeek } from './finish-week'
+import { WaveManager } from './wave-manager'
 
 const defaultHobbie = {
   id: '',
@@ -139,8 +139,11 @@ export function Table() {
       <div>
         <div>
           <div className="mt-10 flex w-full flex-col items-baseline">
-            <FinishWeek />
-            <CreateTaskModal updateTasks={getTasks} />
+            <div className="flex w-full justify-end gap-4">
+              <WaveManager />
+              <CreateTaskModal updateTasks={getTasks} />
+            </div>
+
             <FiltersTask />
           </div>
 
@@ -226,7 +229,7 @@ export function Table() {
 
                               <div className="modal-action space-x-4">
                                 <button className="btn" type="submit" onClick={() => deleteTask(task)}>Yes</button>
-                                <button className="btn btn-neutral" type="submit">No</button>
+                                <button className="btn btn-neutral" type="submit" onClick={() => hideModal(task)}>No</button>
                               </div>
                             </div>
 

@@ -49,7 +49,7 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
 
   return (
     <>
-      <button className="btn btn-neutral self-end" type="button" onClick={showDialog}>New Task</button>
+      <button className="btn btn-neutral" type="button" onClick={showDialog}>New Task</button>
 
       <dialog id="new-hobbie-modal" className="modal">
         <div className="modal-box">
