@@ -1,22 +1,11 @@
-import { useEffect, useState } from 'react'
-import { deleteFirestoreTask, getFirestoreHobbie, getFirestoreTasks, updateFirestoreTask } from '@/lib/firebase/firestore.functions'
 import { CreateTaskModal } from './create-task.modal'
 import { FiltersTask } from './filters-task'
 import { ITask } from '@/@types/types'
-import { useUser } from '@/contexts/user.context'
 import { WaveManager } from './table/components/wave-manager'
 import { MoveToWave } from './table/components/move-to-wave'
-
-const defaultHobbie = {
-  id: '',
-  priority: 2,
-  color: '',
-  createdAt: '',
-  name: '',
-}
+import { useTasks } from '@/contexts/tasks.context'
 
 const tableHeaders = ['Title', 'State', 'Date limit', 'Hobbie', 'Priority', 'Actions']
-
 const taskStates = [
   {
     title: 'COMPLETED',
@@ -33,86 +22,20 @@ const taskStates = [
 ]
 
 export function Table() {
-  const [tasks, setTasks] = useState<ITask[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const { userUid } = useUser()
+  const { data: tasks, fetchData: fetchTasksData, isLoading: isTasksLoading, updateTask, deleteTask } = useTasks()
 
-  useEffect(() => {
-    getTasks()
-  }, [])
-
-  // async function getTasks() {
-  //   setIsLoading(true)
-  //   getFirestoreTasks().then((data) => {
-  //     const sorted = data?.docs.map(task => getTaskObj(task)).then(dataFormated => (
-
-  //     ))
-
-  //     // .sort((a, b) => {
-  //     //   if (a.priority < b.priority) return 1
-  //     //   else return 0
-  //     // }) || []
-
-  //     setTasks(awaited)
-  //   }).finally(() => {
-  //     setIsLoading(false)
-  //   })
-  // }
-
-  async function getTasks() {
-    setIsLoading(true)
-    const querySnapshot = await getFirestoreTasks()
-    const items = querySnapshot?.docs.map(doc => ({
-      id: doc.id,
-      priority: doc.data().priority,
-      createdAt: doc.data().createdAt,
-      title: doc.data().title,
-      hobbieID: doc.data().hobbie,
-      limitDate: doc.data().limitDate,
-      state: doc.data().state,
-      isWaveTask: doc.data().isWaveTask,
-    }))
-
-    if (!items) return []
-
-    const itemsWithHobbies = await Promise.all(
-      items.map(async (item) => {
-        if (!item.hobbieID) return { ...item, hobbie: defaultHobbie }
-
-        const hobbieSnap = await getFirestoreHobbie(item.hobbieID)
-        if (!hobbieSnap?.exists()) return { ...item, hobbie: defaultHobbie }
-
-        return {
-          ...item,
-          hobbie: {
-            id: hobbieSnap.id,
-            priority: hobbieSnap.data().priority,
-            color: hobbieSnap.data().color,
-            createdAt: hobbieSnap.data().createdAt,
-            name: hobbieSnap.data().name,
-          },
-        }
-      }),
-    )
-
-    setIsLoading(false)
-    setTasks(itemsWithHobbies)
-    console.log(itemsWithHobbies)
-    return itemsWithHobbies
-  }
-
-  async function updateTask(task: ITask, state: string) {
-    await updateFirestoreTask(userUid || '', task.id, {
-      ...task,
-      state: state,
-    })
-    getTasks()
-  }
-
+  // Table format
   function getStateColor(state: string) {
     const findState = taskStates.find(taskState => taskState.title === state)
     if (findState) return findState.color
     else return '#aa5560'
+  }
+
+  function getFormatedDate(task: ITask) {
+    const formatter = new Intl.DateTimeFormat('en', { month: 'short', day: '2-digit' })
+    const date = formatter.format(new Date(task.limitDate))
+
+    return date
   }
 
   // Dialog hide-show
@@ -123,20 +46,14 @@ export function Table() {
     (document?.getElementById(`modal-${task.id}-${task.title}`) as HTMLDialogElement)?.close()
   }
 
-  async function deleteTask(task: ITask) {
-    await deleteFirestoreTask(userUid || '', task.id)
-    getTasks()
-    hideModal(task)
+  // Tasks functions
+  function deleteTaskAndHideModal(task: ITask) {
+    deleteTask(task).then(() => {
+      hideModal(task)
+    })
   }
 
-  function getFormatedDate(task: ITask) {
-    const formatter = new Intl.DateTimeFormat('en', { month: 'short', day: '2-digit' })
-    const date = formatter.format(new Date(task.limitDate))
-
-    return date
-  }
-
-  if (isLoading) return <>Loading....</>
+  if (isTasksLoading) return <>Loading....</>
   else
     return (
       <div>
@@ -145,7 +62,7 @@ export function Table() {
             <WaveManager />
 
             <div className="flex w-full justify-end gap-4">
-              <CreateTaskModal updateTasks={getTasks} />
+              <CreateTaskModal updateTasks={fetchTasksData} />
             </div>
 
             <FiltersTask />
@@ -222,7 +139,7 @@ export function Table() {
 
                       <td className="px-4 py-5">
                         <div className="block text-center">
-                          <MoveToWave task={task} updateTasks={getTasks} />
+                          <MoveToWave task={task} updateTasks={fetchTasksData} />
 
                           <button type="button" className="fill-slate-600 hover:fill-error" onClick={() => showDialog(task)} title="delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z" /></svg>
@@ -234,7 +151,7 @@ export function Table() {
                               <p className="py-4">This action cannot be reversed</p>
 
                               <div className="modal-action space-x-4">
-                                <button className="btn" type="submit" onClick={() => deleteTask(task)}>Yes</button>
+                                <button className="btn" type="submit" onClick={() => deleteTaskAndHideModal(task)}>Yes</button>
                                 <button className="btn btn-neutral" type="submit" onClick={() => hideModal(task)}>No</button>
                               </div>
                             </div>
@@ -254,103 +171,20 @@ export function Table() {
                   ))
                 }
               </tbody>
+
+              <tfoot>
+                <tr>
+                  <th className="p-2 opacity-80">{`Total tasks: ${tasks?.length}`}</th>
+                  <th />
+                  <th />
+                  <th />
+                  <th />
+                  <th />
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
       </div>
     )
-    // <div className="mt-10 flex flex-col">
-
-  //   <div className="flex items-center justify-between">
-  //     <FiltersTask />
-  //     <CreateTaskModal updateTasks={getTasks} />
-  //   </div>
-
-  { /* <div className="overflow-x-auto">
-          <table className="w-full table-fixed">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Hobbie</th>
-                <th>State</th>
-                <th>Priority</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {
-                tasks.map(task => (
-                  <tr key={task.id}>
-                    <td className="flex items-center gap-1">
-                      <div className="size-4 rounded-full" style={{ backgroundColor: task.hobbie.color }} />
-                      <span className="text-lg font-bold">{task.title}</span>
-                    </td>
-
-                    <td>
-                      <span>{task.hobbie.name}</span>
-                    </td>
-
-                    <td />
-                    <td />
-                    <td />
-
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
-          */ }
-
-  // </div>
-
-  // return (
-
-  //     <div className="overflow-x-auto">
-  //       <table className="table border-separate border-spacing-y-2">
-  //         <thead>
-  //           <tr>
-  //             <th />
-  //             <th>Name</th>
-  //             <th>State</th>
-  //             <th>Hobbie</th>
-  //             <th>Actions</th>
-  //           </tr>
-  //         </thead>
-
-  //         <tbody>
-  //           {
-  //             tasks?.docs.map(task => (
-  //               <TableRow
-  //                 updateTasks={getTasks}
-  //                 key={task.id}
-  //                 task={{
-  //                   id: task.id,
-  //                   priority: task.data().priority,
-  //                   createdAt: task.data().createdAt,
-  //                   title: task.data().title,
-  //                   hobbie: task.data().hobbie,
-  //                   limitDate: task.data().limitDate,
-  //                   state: task.data().state,
-  //                 }}
-  //               />
-  //             ))
-  //           }
-  //         </tbody>
-
-  //         <tfoot>
-  //           <tr>
-  //             <th />
-  //             <th />
-  //             <th />
-  //             <th />
-  //             <th>{`Total tasks: ${tasks?.docs.length}`}</th>
-  //           </tr>
-  //         </tfoot>
-  //       </table>
-  //     </div>
-
-  //   </div>
-  // )
 }

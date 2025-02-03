@@ -82,7 +82,7 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
 
               <select
                 className="select select-bordered w-full max-w-xs"
-                {...register('hobbie', { required: 'Hobbie is required' })}
+                {...register('hobbieID', { required: 'Hobbie is required' })}
               >
                 {hobbies?.docs.map(hobbie => (
                   <option key={hobbie.id} value={hobbie.id}>{hobbie.data().name}</option>

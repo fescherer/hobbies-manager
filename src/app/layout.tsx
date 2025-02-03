@@ -6,6 +6,7 @@ import { SESSION_COOKIE_NAME } from '@/util/constants'
 import { Header } from '@/components/header'
 import { UserProvider } from '@/contexts/user.context'
 import { FirestoreProvider } from '@/contexts/firebase.context'
+import { ToastContainer } from 'react-toastify'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -38,6 +39,7 @@ export default async function RootLayout({
           <UserProvider InitSession={session}>
             <Header />
             {children}
+            <ToastContainer />
           </UserProvider>
         </FirestoreProvider>
       </body>

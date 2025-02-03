@@ -1,5 +1,6 @@
 'use client'
 
+import { TasksProvider } from '@/contexts/tasks.context'
 import { Table } from './components/table'
 import { useUser } from '@/contexts/user.context'
 
@@ -8,7 +9,9 @@ export default function Tasks() {
 
   if (user)
     return (
-      <Table />
+      <TasksProvider>
+        <Table />
+      </TasksProvider>
     )
   else {
     <></>
