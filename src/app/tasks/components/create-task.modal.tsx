@@ -1,4 +1,5 @@
 import { ITask } from '@/@types/types'
+import { useFirestore } from '@/contexts/firebase.context'
 import { createFirestoreTask, getFirestoreHobbies } from '@/lib/firebase/firestore.functions'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
@@ -10,6 +11,7 @@ type CreateTaskModalProps = {
 
 export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
   const [hobbies, setHobbies] = useState<QuerySnapshot<DocumentData, DocumentData> | null>(null)
+  const { fetchData } = useFirestore()
   useEffect(() => {
     getHobbies()
   }, [])
@@ -33,9 +35,10 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
       limitDate: new Date(data.limitDate).toISOString(),
       state: 'ON GOING',
       createdAt: new Date().toISOString(),
+    }).then(() => fetchData()).finally(() => {
+      hideModal()
+      updateTasks()
     })
-    updateTasks()
-    hideModal()
   }
 
   // Dialog hide-show

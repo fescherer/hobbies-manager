@@ -1,6 +1,6 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 import { auth, db } from './config'
-import { IHobbie, ITask } from '@/@types/types'
+import { IHobbie, ITask, IWave } from '@/@types/types'
 
 export async function getFirestoreData() {
   const user = auth.currentUser
@@ -27,6 +27,86 @@ export async function getFirestoreData() {
         console.log(e)
         return null
       }
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function getTasksCount() {
+  const user = auth.currentUser
+  if (user) {
+    try {
+      const userDoc = collection(db, 'hobbies-manager', user.uid, 'tasks')
+      const docSnap = await getCountFromServer(userDoc)
+      return docSnap
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function createNewWave(data: IWave) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid)
+
+    try {
+      const docSnap = await getDoc(userDoc)
+      await setDoc(userDoc, {
+        ...docSnap.data(),
+        wave: data,
+      })
+      const updated = await getDoc(userDoc)
+      return updated
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function addTaskToWave(taskID: string) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid, 'tasks', taskID)
+    try {
+      await updateDoc(userDoc, {
+        isWaveTask: true,
+      })
+      const updated = await getDoc(userDoc)
+      return updated
+    } catch (e) {
+      console.log(e)
+      return null
+    }
+  } else {
+    console.log('No user is signed in')
+    return null
+  }
+}
+
+export async function removeTaskFromWave(taskID: string) {
+  const user = auth.currentUser
+  if (user) {
+    const userDoc = doc(db, 'hobbies-manager', user.uid, 'tasks', taskID)
+    try {
+      await updateDoc(userDoc, {
+        isWaveTask: false,
+      })
+      const updated = await getDoc(userDoc)
+      return updated
+    } catch (e) {
+      console.log(e)
+      return null
     }
   } else {
     console.log('No user is signed in')

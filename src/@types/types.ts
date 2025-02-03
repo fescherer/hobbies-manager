@@ -6,6 +6,7 @@ export type ITask = {
   limitDate: string
   state: string
   createdAt: string
+  isWaveTask: boolean
 }
 
 export type IHobbie = {
@@ -14,4 +15,10 @@ export type IHobbie = {
   priority: number
   createdAt: string
   color: string
+}
+
+export type IWave = {
+  name: string
+  deadline: string
+  createdAt: string
 }

@@ -6,11 +6,11 @@ export function WaveManager() {
   const { firestore } = useFirestore()
 
   return (
-    <div>
+    <>
       {
-        firestore?.data()?.currentlyWeek ? <FinishWeek /> : <NewWave />
+        firestore?.data()?.wave ? <FinishWeek /> : <NewWave />
       }
 
-    </div>
+    </>
   )
 }

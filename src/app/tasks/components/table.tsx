@@ -4,7 +4,8 @@ import { CreateTaskModal } from './create-task.modal'
 import { FiltersTask } from './filters-task'
 import { ITask } from '@/@types/types'
 import { useUser } from '@/contexts/user.context'
-import { WaveManager } from './wave-manager'
+import { WaveManager } from './table/components/wave-manager'
+import { MoveToWave } from './table/components/move-to-wave'
 
 const defaultHobbie = {
   id: '',
@@ -68,7 +69,9 @@ export function Table() {
       title: doc.data().title,
       hobbieID: doc.data().hobbie,
       limitDate: doc.data().limitDate,
-      state: doc.data().state }))
+      state: doc.data().state,
+      isWaveTask: doc.data().isWaveTask,
+    }))
 
     if (!items) return []
 
@@ -139,8 +142,9 @@ export function Table() {
       <div>
         <div>
           <div className="mt-10 flex w-full flex-col items-baseline">
+            <WaveManager />
+
             <div className="flex w-full justify-end gap-4">
-              <WaveManager />
               <CreateTaskModal updateTasks={getTasks} />
             </div>
 
@@ -218,7 +222,9 @@ export function Table() {
 
                       <td className="px-4 py-5">
                         <div className="block text-center">
-                          <button type="button" className="fill-slate-600 hover:fill-error" onClick={() => showDialog(task)}>
+                          <MoveToWave task={task} updateTasks={getTasks} />
+
+                          <button type="button" className="fill-slate-600 hover:fill-error" onClick={() => showDialog(task)} title="delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z" /></svg>
                           </button>
 
@@ -241,6 +247,7 @@ export function Table() {
                           <button type="button" className="fill-slate-600 hover:fill-slate-800">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path d="M227.31,73.37,182.63,28.68a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96a16,16,0,0,0,0-22.63ZM192,108.68,147.31,64l24-24L216,84.68Z" /></svg>
                           </button>
+
                         </div>
                       </td>
                     </tr>

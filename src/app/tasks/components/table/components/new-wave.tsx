@@ -1,8 +1,7 @@
+import { IWave } from '@/@types/types'
+import { useFirestore } from '@/contexts/firebase.context'
+import { createNewWave } from '@/lib/firebase/firestore.functions'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-type IWave = {
-  name: string
-}
 
 export function NewWave() {
   // Dialog hide-show
@@ -13,6 +12,8 @@ export function NewWave() {
     (document?.getElementById('finish-week-modal') as HTMLDialogElement)?.close()
   }
 
+  const { fetchData } = useFirestore()
+
   // Form
   const {
     register,
@@ -21,8 +22,13 @@ export function NewWave() {
   } = useForm<IWave>()
 
   const onSubmit: SubmitHandler<IWave> = (data) => {
-    console.log(data)
+    createNewWave({
+      ...data,
+      deadline: new Date(data.deadline).toISOString(),
+      createdAt: new Date().toISOString(),
+    })
     hideModal()
+    fetchData()
   }
 
   return (
@@ -48,6 +54,21 @@ export function NewWave() {
               />
 
               {errors.name && <span className="text-error">{errors.name.message}</span>}
+            </div>
+
+            <div>
+              <label className="label">
+                <span className="label-text">Wave Deadline</span>
+              </label>
+
+              <input
+                type="date"
+                placeholder="Your task limit date"
+                {...register('deadline', { required: 'Limit is required' })}
+                className={`input input-bordered w-full ${errors.deadline ? 'input-error' : ''}`}
+              />
+
+              {errors.deadline && <span className="text-error">{errors.deadline.message}</span>}
             </div>
 
             <div className="modal-action">
