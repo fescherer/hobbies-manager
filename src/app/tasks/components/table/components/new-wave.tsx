@@ -1,6 +1,6 @@
 import { IWave } from '@/@types/types'
 import { useFirestore } from '@/contexts/firebase.context'
-import { createNewWave } from '@/lib/firebase/firestore.functions'
+import { createNewWave } from '@/lib/firebase/functions/wave.function'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 export function NewWave() {

@@ -1,11 +1,11 @@
 'use client'
 
 import { ITask } from '@/@types/types'
-import { deleteFirestoreTask, getFirestoreHobbie, getFirestoreTasks, updateFirestoreTask } from '@/lib/firebase/firestore.functions'
 import type { PropsWithChildren } from 'react'
 import React, { useEffect, useState } from 'react'
-import { useUser } from './user.context'
 import { toast } from 'react-toastify'
+import { deleteFirestoreTask, getFirestoreTasks, updateFirestoreTask } from '@/lib/firebase/functions/tasks.function'
+import { getFirestoreHobbie } from '@/lib/firebase/functions/hobbies.function'
 
 interface TasksType {
   fetchData: (reset?: boolean) => void
@@ -34,7 +34,6 @@ const defaultHobbie = {
 export function TasksProvider({ children }: PropsWithChildren) {
   const [data, setData] = useState<ITask[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { userUid } = useUser()
 
   useEffect(() => {
     fetchData()
@@ -87,7 +86,7 @@ export function TasksProvider({ children }: PropsWithChildren) {
   }
 
   function updateTask(task: ITask, state: string) {
-    updateFirestoreTask(userUid || '', task.id, {
+    updateFirestoreTask(task.id, {
       ...task,
       state: state,
     }).then(() => {
@@ -101,12 +100,10 @@ export function TasksProvider({ children }: PropsWithChildren) {
 
   function deleteTask(task: ITask) {
     return new Promise<void>((resolve, reject) => {
-      deleteFirestoreTask(userUid || '', task.id).then(() => {
-        toast.success('Task deleted!')
+      deleteFirestoreTask(task.id).then(() => {
         return fetchData()
       }).then(resolve)
         .catch(() => {
-          toast.error('Error 😢 Task was not deleted')
           return reject
         })
     })

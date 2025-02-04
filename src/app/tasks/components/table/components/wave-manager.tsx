@@ -10,7 +10,6 @@ export function WaveManager() {
       {
         firestore?.data()?.wave ? <FinishWeek /> : <NewWave />
       }
-
     </>
   )
 }

@@ -2,9 +2,9 @@
 
 import { EditHobbieModal } from './edit-hobbie-modal'
 import { useEffect, useState } from 'react'
-import { getFirestoreHobbies } from '@/lib/firebase/firestore.functions'
 import { CreateHobbieModal } from './create-hobbie-modal'
 import { IHobbie } from '@/@types/types'
+import { getFirestoreHobbies } from '@/lib/firebase/functions/hobbies.function'
 
 export function ListHobbies() {
   const [hobbies, setHobbies] = useState<IHobbie[]>([])

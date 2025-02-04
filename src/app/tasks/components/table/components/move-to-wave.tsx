@@ -1,20 +1,22 @@
 import { ITask } from '@/@types/types'
-import { addTaskToWave, removeTaskFromWave } from '@/lib/firebase/firestore.functions'
+import { useTasks } from '@/contexts/tasks.context'
+import { addTaskToWave, removeTaskFromWave } from '@/lib/firebase/functions/wave.function'
 
 type MoveToWaveProps = {
   task: ITask
-  updateTasks: () => void
 }
 
-export function MoveToWave({ task, updateTasks }: MoveToWaveProps) {
+export function MoveToWave({ task }: MoveToWaveProps) {
+  const { fetchData } = useTasks()
+
   function moveToWave(task: ITask) {
     addTaskToWave(task.id)
-    updateTasks()
+    fetchData()
   }
 
   function removeFromWave(task: ITask) {
     removeTaskFromWave(task.id)
-    updateTasks()
+    fetchData()
   }
 
   return (

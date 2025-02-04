@@ -1,7 +1,7 @@
 'use client'
 
 import { IHobbie } from '@/@types/types'
-import { createFirestoreHobbies } from '@/lib/firebase/firestore.functions'
+import { createFirestoreHobbies } from '@/lib/firebase/functions/hobbies.function'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
 type CreateHobbieModalProps = {

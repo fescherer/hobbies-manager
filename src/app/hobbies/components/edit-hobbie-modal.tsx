@@ -1,8 +1,7 @@
 'use client'
 
 import { IHobbie } from '@/@types/types'
-import { useUser } from '@/contexts/user.context'
-import { deleteFirestoreHobbie, updateFirestoreHobbie } from '@/lib/firebase/firestore.functions'
+import { deleteFirestoreHobbie, updateFirestoreHobbie } from '@/lib/firebase/functions/hobbies.function'
 import { cn } from '@/util/cn.function'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -13,9 +12,6 @@ type EditHobbieModalProps = {
 }
 
 export function EditHobbieModal({ hobbie, updateHobbie }: EditHobbieModalProps) {
-  // Firestore data
-  const { userUid } = useUser()
-
   // Form
   const {
     register,
@@ -30,13 +26,13 @@ export function EditHobbieModal({ hobbie, updateHobbie }: EditHobbieModalProps) 
   }, [])
 
   const onSubmit: SubmitHandler<IHobbie> = (data) => {
-    updateFirestoreHobbie(userUid || '', data.id, data)
+    updateFirestoreHobbie(data.id, data)
     updateHobbie()
     hideModal()
   }
 
   async function deleteHobbie() {
-    await deleteFirestoreHobbie(userUid || '', hobbie.id)
+    await deleteFirestoreHobbie(hobbie.id)
     updateHobbie()
     hideModal()
   }

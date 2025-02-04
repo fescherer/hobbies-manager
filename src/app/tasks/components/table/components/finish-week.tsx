@@ -1,5 +1,5 @@
 import { ITask } from '@/@types/types'
-import { useFirestore } from '@/contexts/firebase.context'
+import { useTasks } from '@/contexts/tasks.context'
 import { useUser } from '@/contexts/user.context'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -11,7 +11,7 @@ type IReport = {
 
 export function FinishWeek() {
   const { user } = useUser()
-  const { tasksCount } = useFirestore()
+  const { data: tasks } = useTasks()
 
   // Dialog hide-show
   function showDialog() {
@@ -57,7 +57,7 @@ export function FinishWeek() {
 
         <div className="stat">
           <div className="stat-title">All tasks</div>
-          <div className="stat-value">{tasksCount}</div>
+          <div className="stat-value">{tasks.length}</div>
         </div>
       </div>
 

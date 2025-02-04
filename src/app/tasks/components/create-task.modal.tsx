@@ -1,17 +1,14 @@
 import { ITask } from '@/@types/types'
-import { useFirestore } from '@/contexts/firebase.context'
-import { createFirestoreTask, getFirestoreHobbies } from '@/lib/firebase/firestore.functions'
+import { useTasks } from '@/contexts/tasks.context'
+import { getFirestoreHobbies } from '@/lib/firebase/functions/hobbies.function'
+import { createFirestoreTask } from '@/lib/firebase/functions/tasks.function'
 import { DocumentData, QuerySnapshot } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-type CreateTaskModalProps = {
-  updateTasks: () => void
-}
-
-export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
+export function CreateTaskModal() {
   const [hobbies, setHobbies] = useState<QuerySnapshot<DocumentData, DocumentData> | null>(null)
-  const { fetchData } = useFirestore()
+  const { fetchData } = useTasks()
   useEffect(() => {
     getHobbies()
   }, [])
@@ -37,7 +34,6 @@ export function CreateTaskModal({ updateTasks }: CreateTaskModalProps) {
       createdAt: new Date().toISOString(),
     }).then(() => fetchData()).finally(() => {
       hideModal()
-      updateTasks()
     })
   }
 

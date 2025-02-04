@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { HeaderTabs } from './header-tabs'
 import { signInWithGoogle, signOutWithGoogle } from '@/lib/firebase/auth'
 import { createSession, removeSession } from '@/actions/auth'
-import { getFirestoreData } from '@/lib/firebase/firestore.functions'
 import { useUser } from '@/contexts/user.context'
+import { getFirestoreData } from '@/lib/firebase/functions/base.function'
 
 export function Header() {
   const { user } = useUser()

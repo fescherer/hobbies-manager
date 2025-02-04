@@ -22,7 +22,7 @@ const taskStates = [
 ]
 
 export function Table() {
-  const { data: tasks, fetchData: fetchTasksData, isLoading: isTasksLoading, updateTask, deleteTask } = useTasks()
+  const { data: tasks, isLoading: isTasksLoading, updateTask, deleteTask } = useTasks()
 
   // Table format
   function getStateColor(state: string) {
@@ -62,7 +62,7 @@ export function Table() {
             <WaveManager />
 
             <div className="flex w-full justify-end gap-4">
-              <CreateTaskModal updateTasks={fetchTasksData} />
+              <CreateTaskModal />
             </div>
 
             <FiltersTask />
@@ -139,7 +139,7 @@ export function Table() {
 
                       <td className="px-4 py-5">
                         <div className="block text-center">
-                          <MoveToWave task={task} updateTasks={fetchTasksData} />
+                          <MoveToWave task={task} />
 
                           <button type="button" className="fill-slate-600 hover:fill-error" onClick={() => showDialog(task)} title="delete">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM112,168a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm0-120H96V40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8Z" /></svg>
