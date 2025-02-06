@@ -2,22 +2,25 @@
 
 import { cn } from '@/util/cn.function'
 import { useState } from 'react'
+import { useFilteredTasks } from './contexts/tasks.context'
 
 export function FiltersTask() {
   const [tabSelected, setTabSelected] = useState(0)
 
+  const { setTab } = useFilteredTasks()
+
   const tabs = [
     {
       title: 'Week Tasks',
-      fn: () => console.log('set to week'),
+      fn: () => setTab('wave'),
     },
     {
       title: 'OnGoing Tasks',
-      fn: () => console.log('set to onGoing'),
+      fn: () => setTab('onGoing'),
     },
     {
       title: 'All Tasks',
-      fn: () => console.log('set to all'),
+      fn: () => setTab('all'),
     },
   ]
 

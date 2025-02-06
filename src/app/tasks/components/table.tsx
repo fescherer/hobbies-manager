@@ -4,6 +4,8 @@ import { ITask } from '@/@types/types'
 import { WaveManager } from './table/components/wave-manager'
 import { MoveToWave } from './table/components/move-to-wave'
 import { useTasks } from '@/contexts/tasks.context'
+import { useEffect } from 'react'
+import { useFilteredTasks } from './contexts/tasks.context'
 
 const tableHeaders = ['Title', 'State', 'Date limit', 'Hobbie', 'Priority', 'Actions']
 const taskStates = [
@@ -23,6 +25,11 @@ const taskStates = [
 
 export function Table() {
   const { data: tasks, isLoading: isTasksLoading, updateTask, deleteTask } = useTasks()
+  const { data: filteredData } = useFilteredTasks()
+
+  useEffect(() => {
+
+  })
 
   // Table format
   function getStateColor(state: string) {
@@ -84,7 +91,7 @@ export function Table() {
 
               <tbody>
                 {
-                  tasks.map(task => (
+                  filteredData.map(task => (
                     <tr key={task.id} className="border-b border-slate-50 even:bg-blue-50/50" title={task.title}>
                       <td className="flex items-center gap-2 px-4 py-5">
                         <div style={{ background: task.hobbie.color }} className="size-4 rounded-full" />

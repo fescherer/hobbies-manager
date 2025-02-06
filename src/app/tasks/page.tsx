@@ -3,6 +3,7 @@
 import { TasksProvider } from '@/contexts/tasks.context'
 import { Table } from './components/table'
 import { useUser } from '@/contexts/user.context'
+import { FilteredTasksProvider } from './components/contexts/tasks.context'
 
 export default function Tasks() {
   const { user } = useUser()
@@ -10,7 +11,9 @@ export default function Tasks() {
   if (user)
     return (
       <TasksProvider>
-        <Table />
+        <FilteredTasksProvider>
+          <Table />
+        </FilteredTasksProvider>
       </TasksProvider>
     )
   else {
