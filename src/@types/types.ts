@@ -8,6 +8,7 @@ export type ITask = {
   state: string
   createdAt: string
   isWaveTask: boolean
+  time: number
 }
 
 export type IHobbie = {

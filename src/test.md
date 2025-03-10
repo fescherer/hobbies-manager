@@ -12,6 +12,12 @@ User case:
 -
 
 
+Uma task pode ser de 2 tipos: Semanal e Eventual
+
+
+
+
+
 /*
 
 ## Drawing / Modeling / Origami / Collections

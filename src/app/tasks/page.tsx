@@ -1,22 +1,22 @@
 'use client'
 
-import { TasksProvider } from '@/contexts/tasks.context'
-import { Table } from './components/table'
 import { useUser } from '@/contexts/user.context'
-import { FilteredTasksProvider } from './components/contexts/tasks.context'
+import { TasksStats } from './components/tasks-stats/tasks-stats'
+import { TasksPanel } from './components/tasks-panel/tasks-panel'
 
 export default function Tasks() {
   const { user } = useUser()
 
-  if (user)
-    return (
-      <TasksProvider>
-        <FilteredTasksProvider>
-          <Table />
-        </FilteredTasksProvider>
-      </TasksProvider>
-    )
-  else {
-    <></>
-  }
+  return (
+    <>
+      {user
+        ? (
+          <div>
+            <TasksStats />
+            <TasksPanel />
+          </div>
+        )
+        : <div>Você precisa estar logado para acessar essa página</div>}
+    </>
+  )
 }

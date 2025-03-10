@@ -1,11 +1,11 @@
 import { CreateTaskModal } from './create-task.modal'
 import { FiltersTask } from './filters-task'
 import { ITask } from '@/@types/types'
-import { WaveManager } from './table/components/wave-manager'
 import { MoveToWave } from './table/components/move-to-wave'
 import { useTasks } from '@/contexts/tasks.context'
 import { useEffect } from 'react'
 import { useFilteredTasks } from './contexts/tasks.context'
+import { Wave } from './table/components/wave'
 
 const tableHeaders = ['Title', 'State', 'Date limit', 'Hobbie', 'Priority', 'Actions']
 const taskStates = [
@@ -66,7 +66,7 @@ export function Table() {
       <div>
         <div>
           <div className="mt-10 flex w-full flex-col items-baseline">
-            <WaveManager />
+            <Wave />
 
             <div className="flex w-full justify-end gap-4">
               <CreateTaskModal />
