@@ -37,7 +37,7 @@ export function CreateHobbieModal({ updateHobbie }: CreateHobbieModalProps) {
 
   return (
     <>
-      <button className="flex h-80 w-60 items-center justify-center rounded border shadow-md transition-all hover:scale-105" type="button" onClick={showDialog}>New Hobbie</button>
+      <button className="flex h-80 w-60 items-center justify-center rounded-sm border shadow-md transition-all hover:scale-105" type="button" onClick={showDialog}>New Hobbie</button>
 
       <dialog id="new-hobbie-modal" className="modal">
         <div className="modal-box">

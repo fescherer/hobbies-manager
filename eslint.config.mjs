@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import pluginReact from 'eslint-plugin-react'
 import stylistic from '@stylistic/eslint-plugin'
-import eslintPluginTailwindCSS from 'eslint-plugin-tailwindcss'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -12,7 +11,6 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  ...eslintPluginTailwindCSS.configs['flat/recommended'],
   stylistic.configs.customize({
     indent: 2,
     quotes: 'single',
@@ -55,22 +53,4 @@ export default [
       'react/react-in-jsx-scope': 'off',
     },
   },
-  {
-    plugins: {
-      tailwindcss: eslintPluginTailwindCSS,
-    },
-    rules: {
-      'tailwindcss/no-custom-classname': [
-        'warn', {
-          callees: ['clsx', 'cn'],
-        },
-      ],
-      'tailwindcss/classnames-order': [
-        'warn', {
-          callees: ['clsx', 'cn'],
-        },
-      ],
-    },
-  },
-
 ]

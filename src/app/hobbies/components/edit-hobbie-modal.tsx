@@ -48,7 +48,7 @@ export function EditHobbieModal({ hobbie, updateHobbie }: EditHobbieModalProps) 
 
   return (
     <>
-      <button className={cn('h-80 w-60 rounded border shadow-md transition-all hover:scale-105', 'flex flex-col items-center justify-center gap-5')} onClick={showDialog} type="button">
+      <button className={cn('h-80 w-60 rounded-sm border shadow-md transition-all hover:scale-105', 'flex flex-col items-center justify-center gap-5')} onClick={showDialog} type="button">
         {/* <Image src={hobbie.image} width={112} height={112} className="size-28 rounded-full" alt="" /> */}
         <div style={{ background: hobbie.color }} className="size-28 rounded-full" />
 

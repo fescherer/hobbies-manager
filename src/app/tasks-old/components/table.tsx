@@ -113,7 +113,7 @@ export function Table() {
                             <span>{task.state}</span>
                           </div>
 
-                          <ul tabIndex={0} className="menu dropdown-content absolute z-[1] w-52 space-y-2 rounded-box bg-base-100 p-2 shadow">
+                          <ul tabIndex={0} className="menu dropdown-content absolute z-1 w-52 space-y-2 rounded-box bg-base-100 p-2 shadow-sm">
                             {
                               taskStates.map(state => (
                                 <li key={state.title}>

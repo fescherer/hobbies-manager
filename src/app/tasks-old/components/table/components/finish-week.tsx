@@ -43,7 +43,7 @@ export function FinishWeek() {
         </button>
       </div>
 
-      <div className="stats shadow">
+      <div className="stats shadow-sm">
         <div className="stat">
           <div className="stat-title">Tasks in the wave</div>
           <div className="stat-value">100</div>

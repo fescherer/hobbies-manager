@@ -33,7 +33,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} m-auto max-w-screen-md antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} m-auto max-w-(--breakpoint-md) antialiased`}
       >
         <FirestoreProvider>
           <UserProvider InitSession={session}>
